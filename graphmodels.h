@@ -1,13 +1,15 @@
-#ifndef TGRAPHDESCRIPTIONS_H
-#define TGRAPHDESCRIPTIONS_H
+#ifndef GRAPHMODELS_H
+#define GRAPHMODELS_H
 
-#include <qopengl.h>
+#include <GL/gl.h>
+#include <GL/glu.h>
+//#include <GL/glaux.h>
 
 struct TGraphTank
 {
 public:
     GLdouble vertexArray[7][3];
-    uint type;
+    unsigned int type;
 
     explicit TGraphTank();
 };
@@ -20,6 +22,4 @@ public:
 
 };
 
-
-
-#endif // TGRAPHDESCRIPTIONS_H
+#endif // GRAPHMODELS_H

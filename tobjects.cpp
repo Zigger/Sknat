@@ -1,33 +1,25 @@
 #include "tobjects.h"
 
-TGameObject::TGameObject(QObject *parent)
-    : QObject(parent)
+TObject::TObject(unsigned int _id)
 {
-    position.rx() = 0;
-    position.ry() = 0;
-    direction.rx() = 0;
-    direction.ry() = 0;
+    id = _id;
+    position.x = 0;
+    position.y = 0;
+    position.z = 0;
     directionAngle = 0;
+    direction.x = 0;
+    direction.y = 0;
+    direction.z = 0;
 }
 
 
-TTank::TTank(float _x, float _y, QObject *parent)
-    : TGameObject(parent)
+TTank::TTank(unsigned int id)
+    : TObject(id)
 {
-    position.rx() = _x;
-    position.ry() = _y;
-    towerDirection.rx() = 0;
-    towerDirection.ry() = 0;
-    towerDirectionAngle = 0;
+    towerDirAngle = 0;
+    towerVector.x = 0;
+    towerVector.y = 0;
+    towerVector.z = 0;
     speed = 0;
-    objType = tank;
-}
-
-
-TStruct::TStruct(float _x, float _y, QObject *parent)
-    : TGameObject(parent)
-{
-    position.rx() = _x;
-    position.ry() = _y;
-    objType = house;
+    isMooving = false;
 }

@@ -1,13 +1,14 @@
-#include "tgraphics.h"
 
-#include <QApplication>
+#include "mainmechanicks.h"
 
-int main(int argc, char *argv[])
+int main()
 {
-    QApplication a(argc, argv);
-    TGraphics w;
+    MainMechanicks *mech = new MainMechanicks();
+    while (1) {
+        mech->main_processing();
 
-    w.show();
-    
-    return a.exec();
+    }
+
+    return 0;
 }
+
