@@ -33,8 +33,9 @@ public:
     int width;
     GLfloat ratio;
 
-    void DrawGLScene(TTank *_pl);
-    void drawPlayer(TTank *pl);
+    void DrawGLScene(TTank *_pl, double *interpolation);
+    void drawPlayer(TTank *pl, double *interpolation);
+    void drawTargetLine(TTank *pl, double *interpolation);
     void translatePlayersMousePos(TTank *pl);
 
     TGraphTank tankModel;

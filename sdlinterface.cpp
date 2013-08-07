@@ -60,7 +60,7 @@ void SDLInterface::process_events()
     }
 }
 
-void SDLInterface::DrawGLScene(TTank *_pl)
+void SDLInterface::DrawGLScene(TTank *_pl, double *interpolation)
 {
     translatePlayersMousePos(_pl);
 
@@ -69,36 +69,33 @@ void SDLInterface::DrawGLScene(TTank *_pl)
     glMatrixMode(GL_MODELVIEW);
     glLoadIdentity();
 
-        glColor3ub(0, 255, 0);
-        glBegin(GL_LINES);
-            glVertex2d(-100, 0);
-            glVertex2d(100, 0);
+    glColor3ub(0, 255, 0);
+    glBegin(GL_LINES);
+        glVertex2d(-100, 0);
+        glVertex2d(100, 0);
+        glVertex2d(0, -100);
+        glVertex2d(0, 100);
+    glEnd();
 
-            glVertex2d(0, -100);
-            glVertex2d(0, 100);
-        glEnd();
-
-    //====draw player
-                drawPlayer(_pl);
-    //====draw target line
-//         glColor3ub(255, 0, 0);
-//         glBegin(GL_LINES);
-//             glVertex2d(_pl->position.x, _pl->position.y);
-//             glVertex2d(mouseWorldX, mouseWorldY);
-//         glEnd();
+//====draw player
+    drawPlayer(_pl, interpolation);
+//====draw target line
+    drawTargetLine(_pl, interpolation);
 
     glFlush();
 //    SDL_GL_SwapWindow(window);
     SDL_GL_SwapBuffers();
 }
 
-void SDLInterface::drawPlayer(TTank *pl)
+void SDLInterface::drawPlayer(TTank *pl, double *interpolation)
 {
     glPushMatrix();
     //====draw chassis
-        glTranslatef(pl->position.x, pl->position.y, 0.0f); //draw tank
+        glTranslatef(pl->position.x,
+                     pl->position.y,
+                     0.0f); //draw tank
         glRotatef(pl->directionAngle, 0.0, 0.0, 1.0);
-        glTranslatef(0.0f, pl->speed, 0.0f);
+        glTranslatef(0.0f, pl->speed*(*interpolation), 0.0f);
         glGetDoublev(GL_MODELVIEW_MATRIX, Tmodelview);
         glGetDoublev(GL_PROJECTION_MATRIX, Tprojection);
         glColor3ub(0, 255, 255);
@@ -112,6 +109,27 @@ void SDLInterface::drawPlayer(TTank *pl)
         glVertexPointer(3, GL_DOUBLE, 0, tankModel.vertexArray);
         glDrawArrays(GL_TRIANGLES, 4, 3);
         glPopMatrix();
+}
+
+void SDLInterface::drawTargetLine(TTank *pl, double *interpolation)
+{
+    glColor3ub(255, 0, 0);
+    glPushMatrix();
+
+    glTranslatef(pl->position.x,
+                 pl->position.y,
+                 0.0f); //draw tank
+    glRotatef(pl->directionAngle, 0.0, 0.0, 1.0);
+    glTranslatef(0.0f, pl->speed*(*interpolation), 0.0f);
+
+    glBegin(GL_LINES);
+        glVertex2d(0, 0);
+
+        glPopMatrix();
+
+        glVertex2d(mouseWorldX, mouseWorldY);
+    glEnd();
+
 }
 
 void SDLInterface::translatePlayersMousePos(TTank *pl)

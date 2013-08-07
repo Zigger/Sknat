@@ -13,7 +13,7 @@ SOURCES += main.cpp \
     inputcatcher.cpp \
     graphmodels.cpp
 
-INCLUDEPATH += C:\Qt\SDL-1.2.15\include\SDL
+INCLUDEPATH += C:\Qt\SDL1.2MinGW\SDL-1.2.15\include\SDL
 
 LIBS += -lSDL
 LIBS += -lSDLmain

@@ -8,6 +8,8 @@ MainMechanicks::MainMechanicks()
     sdlint = new SDLInterface();
 
     dt = 1;
+
+    next_game_tick = SDL_GetTicks();
 }
 
 void MainMechanicks::process_player(double dt)
@@ -72,15 +74,26 @@ void MainMechanicks::process_player(double dt)
 void MainMechanicks::main_processing()
 {
     sdlint->process_events();
-    ticksNew = SDL_GetTicks();
-    dt = (double)(ticksNew - ticksOld)/1000;
-    ticksOld = ticksNew;
+//    ticksNew = SDL_GetTicks();
+//    dt = (double)(ticksNew - ticksOld)/1000;
+//    ticksOld = ticksNew;
 
-    if (dt > (0.016f)) dt = 0.016;
-    if (dt < (0.001f)) dt = 0.001;
+//    if (dt > (0.016f)) dt = 0.016;
+//    if (dt < (0.001f)) dt = 0.001;
 
-    process_player(dt);
-    sdlint->DrawGLScene(player);
-    Sleep(2);
+    loops = 0;
+    while (SDL_GetTicks() > next_game_tick && loops < MAX_FRAMESKIP) {
+        cout << next_game_tick << " " << loops << " " <<"pp" << endl;
+        process_player(dt/50);
+
+        next_game_tick += SKIP_TICKS;
+        loops++;
+    }
+
+    interpolation = float( SDL_GetTicks() + SKIP_TICKS - next_game_tick)
+            /float( SKIP_TICKS);
+    cout << "DrawGLScene" << endl;
+    sdlint->DrawGLScene(player, &interpolation);
+    //    Sleep(2);
 
 }

@@ -28,4 +28,10 @@ public:
     double speed;
 };
 
+class BaseStruct : public TObject
+{//any map struct
+public:
+    unsigned int type;
+};
+
 #endif // TOBJECTS_H
