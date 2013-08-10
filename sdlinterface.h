@@ -38,6 +38,8 @@ public:
     void drawTargetLine(TTank *pl, double *interpolation);
     void translatePlayersMousePos(TTank *pl);
 
+    void image_shape(TTank *pl);
+
     TGraphTank tankModel;
 
 //====matrix

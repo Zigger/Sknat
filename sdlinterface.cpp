@@ -77,10 +77,15 @@ void SDLInterface::DrawGLScene(TTank *_pl, double *interpolation)
         glVertex2d(0, 100);
     glEnd();
 
+
 //====draw player
     drawPlayer(_pl, interpolation);
+
 //====draw target line
     drawTargetLine(_pl, interpolation);
+//image shape (debug)
+        image_shape(_pl);
+
 
     glFlush();
 //    SDL_GL_SwapWindow(window);
@@ -108,27 +113,28 @@ void SDLInterface::drawPlayer(TTank *pl, double *interpolation)
         glColor3ub(255, 255, 0);
         glVertexPointer(3, GL_DOUBLE, 0, tankModel.vertexArray);
         glDrawArrays(GL_TRIANGLES, 4, 3);
-        glPopMatrix();
+
+    glPopMatrix();
 }
 
 void SDLInterface::drawTargetLine(TTank *pl, double *interpolation)
 {
     glColor3ub(255, 0, 0);
-    glPushMatrix();
+//    glPushMatrix();
 
-    glTranslatef(pl->position.x,
-                 pl->position.y,
-                 0.0f); //draw tank
-    glRotatef(pl->directionAngle, 0.0, 0.0, 1.0);
-    glTranslatef(0.0f, pl->speed*(*interpolation), 0.0f);
+//        glTranslatef(pl->position.x,
+//                    pl->position.y,
+//                    0.0f); //draw tank
+//        glRotatef(pl->directionAngle, 0.0, 0.0, 1.0);
+//        glTranslatef(0.0f, pl->speed*(*interpolation), 0.0f);
 
-    glBegin(GL_LINES);
-        glVertex2d(0, 0);
+        glBegin(GL_LINES);
+            glVertex2d(pl->position.x, pl->position.y);
 
-        glPopMatrix();
+//    glPopMatrix();
 
-        glVertex2d(mouseWorldX, mouseWorldY);
-    glEnd();
+            glVertex2d(mouseWorldX, mouseWorldY);
+        glEnd();
 
 }
 
@@ -169,4 +175,15 @@ void SDLInterface::translatePlayersMousePos(TTank *pl)
                  &mouseWorldX,
                 &mouseWorldY,
                 &mouseWorldZ);
+}
+
+void SDLInterface::image_shape(TTank *pl)
+{
+    glColor3d(255, 255, 255);
+    glBegin(GL_POINTS);
+    glVertex3f(pl->currShape[0][0], pl->currShape[0][1], pl->currShape[0][2]);
+    glVertex3f(pl->currShape[1][0], pl->currShape[1][1], pl->currShape[1][2]);
+    glVertex3f(pl->currShape[2][0], pl->currShape[2][1], pl->currShape[2][2]);
+    glVertex3f(pl->currShape[3][0], pl->currShape[3][1], pl->currShape[3][2]);
+    glEnd();
 }

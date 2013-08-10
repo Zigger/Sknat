@@ -3,7 +3,6 @@
 
 #include "inputcatcher.h"
 
-
 class MainMechanicks
 {
 public:
@@ -14,13 +13,17 @@ public:
     double dt;
 
     TTank *player;
+    BaseStruct *house;
 
     InputCatcher *inpCather;
 
     void process_player(double dt);
-    void main_processing();
+    void translate_sahpe();
 
-//testing game loop:
+    void game_loop();
+    void world_processing();
+
+//game loop:
     const int TICKS_PER_SECOND = 60;
     const int SKIP_TICKS = 1000 / TICKS_PER_SECOND;
     const int MAX_FRAMESKIP = 5;

@@ -4,6 +4,7 @@ MainMechanicks::MainMechanicks()
 {
     inpCather = new InputCatcher();
     player = new TTank(0);
+    house = new BaseStruct(1);
 
     sdlint = new SDLInterface();
 
@@ -41,13 +42,13 @@ void MainMechanicks::process_player(double dt)
                     player->speed -= 0.3*dt;
                 } else if (!inpCather->keystate[SDLK_s] && inpCather->keystate[SDLK_w]) {
                     player->speed += 0.6*dt;
-                } else if (!inpCather->keystate[SDLK_s] && inpCather->keystate[SDLK_w]) {
+                } else if (!inpCather->keystate[SDLK_s] && !inpCather->keystate[SDLK_w]) {
                     player->speed = player->speed + 0.3*dt;
                 }
             }
         } else if (player->speed == 0) {
             if (inpCather->keystate[SDLK_w]) { player->speed += 0.3*dt; }
-            else if (inpCather->keystate[SDLK_s] == true) { player->speed -= 0.3*dt; }
+            else if (inpCather->keystate[SDLK_s]) { player->speed -= 0.3*dt; }
         }
     //finding player's new speed-----
 
@@ -71,20 +72,42 @@ void MainMechanicks::process_player(double dt)
 
 }
 
-void MainMechanicks::main_processing()
+void MainMechanicks::translate_sahpe()
+{//finding new choordinates of base object figure.
+    //axis:
+    float ox_x;
+    float ox_y;
+    float oy_x;
+    float oy_y;
+
+    //new rotated axis
+    ox_x = cos(player->directionAngle*(3.14/180));
+    ox_y = sin(player->directionAngle*(3.14/180));
+    oy_x = -sin(player->directionAngle*(3.14/180));
+    oy_y = cos(player->directionAngle*(3.14/180));
+
+    //new choordinates of shape-points
+    for (int i = 0; i < 4; i++) {//0 = x : 1 = y
+        float t_x;
+        float t_y;
+        t_x = player->position.x + ((player->shape[i][0]*ox_x)
+                + (player->shape[i][1]*oy_x));
+        t_y = player->position.y + ((player->shape[i][0]*ox_y)
+                + (player->shape[i][1]*oy_y));
+        player->currShape[i][0] = t_x;
+        player->currShape[i][1] = t_y;
+    }
+
+}
+
+void MainMechanicks::game_loop()
 {
     sdlint->process_events();
-//    ticksNew = SDL_GetTicks();
-//    dt = (double)(ticksNew - ticksOld)/1000;
-//    ticksOld = ticksNew;
-
-//    if (dt > (0.016f)) dt = 0.016;
-//    if (dt < (0.001f)) dt = 0.001;
 
     loops = 0;
     while (SDL_GetTicks() > next_game_tick && loops < MAX_FRAMESKIP) {
-        cout << next_game_tick << " " << loops << " " <<"pp" << endl;
-        process_player(dt/50);
+//        cout << next_game_tick << " " << loops << " " <<"pp" << endl;
+        world_processing();
 
         next_game_tick += SKIP_TICKS;
         loops++;
@@ -92,8 +115,14 @@ void MainMechanicks::main_processing()
 
     interpolation = float( SDL_GetTicks() + SKIP_TICKS - next_game_tick)
             /float( SKIP_TICKS);
-    cout << "DrawGLScene" << endl;
+//    cout << "DrawGLScene" << endl;
     sdlint->DrawGLScene(player, &interpolation);
-    //    Sleep(2);
+        Sleep(1);
 
+}
+
+void MainMechanicks::world_processing()
+{
+    process_player(dt/50);
+    translate_sahpe();
 }

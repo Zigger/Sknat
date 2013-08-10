@@ -5,7 +5,7 @@ int main()
 {
     MainMechanicks *mech = new MainMechanicks();
     while (1) {
-        mech->main_processing();
+        mech->game_loop();
 
     }
 
