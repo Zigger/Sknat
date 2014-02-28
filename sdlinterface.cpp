@@ -14,9 +14,9 @@ SDLInterface::SDLInterface()
     SDL_GL_SetAttribute(SDL_GL_GREEN_SIZE, 6);
     SDL_GL_SetAttribute(SDL_GL_BLUE_SIZE, 5);
 
-    SDL_SetVideoMode(800,600,32,SDL_OPENGL);
-//    window = SDL_CreateWindow("test", 0, 0, 640, 480, SDL_WINDOW_OPENGL);
-
+    
+    window = SDL_CreateWindow("test", 0, 0, 640, 480, SDL_WINDOW_OPENGL);
+    SDL_GL_CreateContext(window);
     glClearColor(0.0f, 0.0f, 0.0f, 0.0f);
 //    glClearDepth(1.0);
 //    glDepthFunc(GL_LESS);
@@ -88,8 +88,8 @@ void SDLInterface::DrawGLScene(TTank *_pl, double *interpolation)
 
 
     glFlush();
-//    SDL_GL_SwapWindow(window);
-    SDL_GL_SwapBuffers();
+    SDL_GL_SwapWindow(window);
+    //SDL_GL_SwapBuffers();
 }
 
 void SDLInterface::drawPlayer(TTank *pl, double *interpolation)

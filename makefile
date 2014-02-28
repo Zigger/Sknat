@@ -1,7 +1,7 @@
 TARGET=$(shell basename 'Sknat')
 SOURCES=$(wildcard *.cpp)
 OBJECTS=$(SOURCES:%.cpp=%.o)
-CFLAGS=-lstdc++ -lSDL -lGL -lGLU -lm
+CFLAGS=-lstdc++ -O2 -lSDL2 -lGL -lGLU -lm
 
 all: $(TARGET)
 

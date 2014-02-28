@@ -117,8 +117,7 @@ void MainMechanicks::game_loop()
             /float( SKIP_TICKS);
 //    cout << "DrawGLScene" << endl;
     sdlint->DrawGLScene(player, &interpolation);
-        Sleep(1);
-
+    SDL_Delay(1);
 }
 
 void MainMechanicks::world_processing()

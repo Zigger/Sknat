@@ -1,7 +1,7 @@
 #ifndef SDLINTERFACE_H
 #define SDLINTERFACE_H
 
-#include <SDL.h>
+#include <SDL2/SDL.h>
 
 #include <math.h>
 #include "mainmap.h"
@@ -16,14 +16,10 @@ class SDLInterface
 public:
     SDLInterface();
     void quit();
-
     SDL_Event any_ev;
-
     void process_events();
-
     int mouseMoveEvX;
     int mouseMoveEvY;
-
     GLdouble mouseWorldX;
     GLdouble mouseWorldY;
     GLdouble mouseWorldZ;
@@ -45,6 +41,9 @@ public:
 //====matrix
     GLdouble Tmodelview[16];
     GLdouble Tprojection[16];
+private:
+    SDL_GLContext *context;
+    SDL_Window *window;
 
 };
 
